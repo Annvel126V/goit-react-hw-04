@@ -1,4 +1,5 @@
 import toast from "react-hot-toast";
+import s from "./SearchBar.module.css";
 import { IoSearchOutline } from "react-icons/io5";
 const SearchBar = ({ onSearch }) => {
   const handleSubmit = (event) => {
@@ -12,7 +13,7 @@ const SearchBar = ({ onSearch }) => {
     event.target.reset();
   };
   return (
-    <header>
+    <header className={s.Searchbar}>
       <form onSubmit={handleSubmit}>
         <input
           type="text"
