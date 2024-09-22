@@ -1,32 +1,37 @@
-import toast from "react-hot-toast";
+import toast, { Toaster } from "react-hot-toast";
 import s from "./SearchBar.module.css";
 import { IoSearchOutline } from "react-icons/io5";
 const SearchBar = ({ onSearch }) => {
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    const query = event.target.elements.query.value;
-    if (!query) {
-      toast.error("Field shouldn't be empty", { position: "top-right" });
-      return;
-    }
-    onSearch(query);
-    event.target.reset();
-  };
   return (
-    <header className={s.Searchbar}>
-      <form onSubmit={handleSubmit}>
+    <header className={s.searchbar}>
+      <form
+        className={s.form}
+        onSubmit={(e) => {
+          e.preventDefault();
+          const form = e.target;
+          const query = form.elements.query.value;
+          if (form.elements.query.value.trim() === "") {
+            toast.error("Enter a search query");
+            return;
+          }
+          onSearch(query);
+          form.reset();
+        }}
+      >
         <input
-          type="text"
           name="query"
+          className={s.input}
+          type="text"
           autoComplete="off"
           autoFocus
           placeholder="Search images and photos"
         />
-        <button type="submit">
-          <IoSearchOutline size={20} />
-          Search
+
+        <button type="submit" className={s.button}>
+          <IoSearchOutline />
         </button>
       </form>
+      <Toaster />
     </header>
   );
 };

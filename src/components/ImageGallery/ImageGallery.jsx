@@ -2,13 +2,18 @@ import ImageCard from "../ImageCard/ImageCard";
 
 const ImageGallery = ({ images, onOpenModal }) => {
   return (
-    <div>
+    <>
       <ul>
-        {images.map((image) => (
-          <ImageCard key={image.id} image={image} onOpenModal={onOpenModal} />
+        {images.map((img) => (
+          <li
+            key={img.id}
+            onClick={() => onOpenModal(img.urls.regular, img.alt_description)}
+          >
+            <ImageCard img={img} />
+          </li>
         ))}
       </ul>
-    </div>
+    </>
   );
 };
 

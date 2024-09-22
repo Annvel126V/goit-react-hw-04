@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import SearchBar from "./components/SearchBar/SearchBar";
 import toast, { Toaster } from "react-hot-toast";
 import Loader from "./components/Loader/Loader";
@@ -6,76 +6,79 @@ import ErrorMessage from "./components/ErrorMessage/ErrorMessage";
 import ImageGallery from "./components/ImageGallery/ImageGallery";
 import ImageModal from "./components/ImageModal/ImageModal";
 import LoadMoreBtn from "./components/LoadMoreBtn/LoadMoreBtn";
-import { fetchhImages } from "./servises.api";
+import { fetchData } from "./servises.api";
 
 function App() {
   const [images, setImages] = useState([]);
   const [error, setError] = useState(false);
   const [page, setPage] = useState(1);
   const [query, setQuery] = useState("");
-  const [totalPages, setTotalPages] = useState(0);
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [selectedImage, setSelectedImage] = useState(null);
 
-  const handleSearch = async (query) => {
-    try {
-      setError(false);
-      setImages([]);
-      setPage(1);
-      setQuery(query);
-      setTotalPages(0);
-      setIsLoading(true);
-      const response = await fetchhImages(query, page);
-      setImages(response.imeges);
-      setTotalPages(response.totalPages);
-    } catch (error) {
-      setError(true);
-      toast.error(error.message);
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
-  const loadMore = async () => {
-    try {
-      setIsLoading(true);
-      const response = await fetchhImages(query, page + 1);
-      setImages((prevImages) => [...prevImages, ...response.imeges]);
-      setPage(page + 1);
-
-      if (response.imeges.length === 0) {
-        toast.error("No more images to load!");
+  useEffect(() => {
+    const fetchImages = async () => {
+      if (query === "") {
+        return;
       }
-    } catch (error) {
-      toast.error(error.message);
-      setError(true);
-    } finally {
-      setIsLoading(false);
-    }
-  };
+      try {
+        setIsLoading(true);
+        setError(false);
+        const response = await fetchData(query, page);
 
-  const handleOpenModal = (image) => {
-    setSelectedImage(image);
+        if (page === 1) {
+          setImages(response.results);
+        } else {
+          setImages((prevImages) => [...prevImages, ...response.results]);
+        }
+      } catch (error) {
+        toast.error(error.message);
+        setError(true);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchImages();
+  }, [query, page]);
+  const handleSearch = (newQuery) => {
+    setQuery(newQuery);
+    setPage(1);
+  };
+  const handleLoadMore = () => {
+    setPage((prevPage) => prevPage + 1);
+  };
+  const handleOpenModal = (imageUrl) => {
+    setIsModalOpen(true);
+    setSelectedImage(imageUrl);
   };
 
   const handleCloseModal = () => {
+    setIsModalOpen(false);
     setSelectedImage(null);
   };
+  const loadMore = () => {
+    handleLoadMore();
+  };
+
   return (
     <>
       <Toaster />
       <SearchBar onSearch={handleSearch} />
-      {error && <ErrorMessage />}
       {images.length > 0 && (
-        <ImageGallery item={images} onOpenModal={handleOpenModal} />
+        <ImageGallery images={images} onOpenModal={handleOpenModal} />
       )}
       {isLoading && <Loader />}
-      {totalPages > page && <LoadMoreBtn onClick={loadMore} />}
+      {error && <ErrorMessage />}
+      {images.length > 0 && !isLoading && !error && (
+        <LoadMoreBtn onClick={loadMore} />
+      )}
 
       {selectedImage && (
         <ImageModal
-          isOpen={!!selectedImage}
-          image={selectedImage}
+          isOpen={isModalOpen}
+          imageUrl={selectedImage}
           onClose={handleCloseModal}
         />
       )}
