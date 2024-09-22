@@ -1,6 +1,6 @@
 import toast, { Toaster } from "react-hot-toast";
 import s from "./SearchBar.module.css";
-import { IoSearchOutline } from "react-icons/io5";
+import { BiSearchAlt } from "react-icons/bi";
 const SearchBar = ({ onSearch }) => {
   return (
     <header className={s.searchbar}>
@@ -18,18 +18,19 @@ const SearchBar = ({ onSearch }) => {
           form.reset();
         }}
       >
-        <input
-          name="query"
-          className={s.input}
-          type="text"
-          autoComplete="off"
-          autoFocus
-          placeholder="Search images and photos"
-        />
-
-        <button type="submit" className={s.button}>
-          <IoSearchOutline />
-        </button>
+        <div className={s.form__wrapper}>
+          <button type="submit" className={s.button}>
+            <BiSearchAlt size={30} />
+          </button>
+          <input
+            name="query"
+            className={s.input}
+            type="text"
+            autoComplete="off"
+            autoFocus
+            placeholder="Search images and photos"
+          />
+        </div>
       </form>
       <Toaster />
     </header>
