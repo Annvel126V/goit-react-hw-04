@@ -1,23 +1,21 @@
 import Modal from "react-modal";
 import s from "./ImageModal.module.css";
-import { useEffect } from "react";
+// import { useEffect } from "react";
 Modal.setAppElement("#root");
 const ImageModal = ({ isOpen, imageUrl, onClose }) => {
-  useEffect(() => {
-    const handleKeyDown = (event) => {
-      if (event.key === "Escape") {
-        onClose();
-      }
-    };
-    window.addEventListener("keydown", handleKeyDown);
+  // useEffect(() => {
+  //   const handleKeyDown = (event) => {
+  //     if (event.key === "Escape") {
+  //       onClose();
+  //     }
+  //   };
+  //   window.addEventListener("keydown", handleKeyDown);
 
-    return (
-      () => {
-        window.removeEventListener("keydown", handleKeyDown);
-      },
-      [onClose]
-    );
-  });
+  //   return () => {
+  //     window.removeEventListener("keydown", handleKeyDown);
+  //   };
+  // }),
+  //   [onClose];
   return (
     <>
       <Modal
@@ -28,9 +26,11 @@ const ImageModal = ({ isOpen, imageUrl, onClose }) => {
         contentLabel="Image Modal"
         shouldCloseOnOverlayClick={true}
       >
-        <button className={s.closeBtn} onClick={onClose}>
-          <img className={s.closeIcon} src={imageUrl} alt="close button" />
-        </button>
+        <div className={s.modalContent}>
+          <button className={s.closeBtn} onClick={onClose}>
+            <img className={s.modalContent} src={imageUrl} alt="close button" />
+          </button>
+        </div>
       </Modal>
     </>
   );

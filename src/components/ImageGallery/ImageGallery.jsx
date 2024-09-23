@@ -6,6 +6,7 @@ const ImageGallery = ({ images, onOpenModal }) => {
       <ul className={s.gallery}>
         {images.map((img) => (
           <li
+            className={s.image}
             key={img.id}
             onClick={() => onOpenModal(img.urls.regular, img.alt_description)}
           >

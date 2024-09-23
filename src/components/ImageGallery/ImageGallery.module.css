@@ -6,3 +6,8 @@
   flex-wrap: wrap;
   list-style-type: none;
 }
+.image {
+  flex-basis: calc((100% - 150px) / 4);
+  border-radius: 15px;
+  overflow: hidden;
+}
