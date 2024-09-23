@@ -28,7 +28,7 @@ const ImageModal = ({ isOpen, imageUrl, onClose }) => {
       >
         <div className={s.modalContent}>
           <button className={s.closeBtn} onClick={onClose}>
-            <img className={s.modalContent} src={imageUrl} alt="close button" />
+            <img className={s.img} src={imageUrl} alt="close button" />
           </button>
         </div>
       </Modal>

@@ -7,7 +7,9 @@
   list-style-type: none;
 }
 .image {
-  flex-basis: calc((100% - 150px) / 4);
-  border-radius: 15px;
-  overflow: hidden;
+  list-style-type: none;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: center;
 }
