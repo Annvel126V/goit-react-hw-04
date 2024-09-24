@@ -27,9 +27,8 @@ const ImageModal = ({ isOpen, imageUrl, onClose }) => {
         shouldCloseOnOverlayClick={true}
       >
         <div className={s.modalContent}>
-          <button className={s.closeBtn} onClick={onClose}>
-            <img className={s.img} src={imageUrl} alt="close button" />
-          </button>
+          <img className={s.img} src={imageUrl} alt="close button" />
+          <button className={s.closeBtn} onClick={onClose}></button>
         </div>
       </Modal>
     </>
